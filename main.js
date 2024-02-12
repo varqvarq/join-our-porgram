@@ -1,34 +1,23 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const footer = document.querySelector('.app-footer');
-  const joinOurProgram = document.createElement('section');
-  const appTitle = document.createElement('h2');
-  const appSubtitle = document.createElement('h3');
-  const emailForm = document.createElement('form');
-  const input = document.createElement('input');
-  const button = document.createElement('button');
+import { JoinUsSection } from './join-us-section.js';
 
-  joinOurProgram.className = 'app-section app-section--join-our-program';
-  appTitle.className = 'app-title';
-  appTitle.textContent = 'Join Our Program';
-  appSubtitle.className = 'app-subtitle';
-  appSubtitle.innerHTML = 'Sed do eiusmod tempor incididunt<br>ut labore et dolore magna aliqua.'
-  emailForm.className = 'app-section__form';
-  input.className = 'app-section__form-input';
-  input.setAttribute('placeholder', 'Email');
-  input.setAttribute('required', true);
-  input.setAttribute('type', 'email');
-  button.className = 'app-section__button app-section__button--join-oc';
-  button.textContent = 'subcribe';
+class SectionCreator {
+  create(type) {
+    switch (type){
+      case 'standard':
+        return new JoinUsSection().createSection();
+      case 'advanced':
+        return new JoinUsSection('Join Our Advanced Program', 'Subscribe to Advanced Program').createSection();
+      default: 
+        throw new Error('Invalid section type')
+    }
+  }
 
-  emailForm.append(input, button);
+}
 
-  emailForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    console.log(input.value);
-    input.value = '';
-  });
- 
-  joinOurProgram.append(appTitle, appSubtitle, emailForm);
-   
-  footer.before(joinOurProgram);
-})
+const sectionCreator = new SectionCreator();
+const standardSection = sectionCreator.create('standard')
+const advancedSection = sectionCreator.create('advanced');
+
+const footer = document.querySelector('.app-footer');
+footer.before(advancedSection);
+
