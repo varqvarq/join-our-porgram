@@ -35,6 +35,7 @@ class JoinUsSection {
     });
     
     joinOurProgram.append(appTitle, appSubtitle, emailForm);
+    this.section = joinOurProgram;
     
     return joinOurProgram;
   }
