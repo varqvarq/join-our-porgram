@@ -1,24 +1,26 @@
-  import { JoinUsSection } from './join-us-section.js';
+import { SectionCreator } from './join-us-section.js'; 
+import { validate } from './email-validator.js';
 
-  class SectionCreator {
-    create(type) {
-      switch (type){
-        case 'standard':
-          return new JoinUsSection().createSection();
-        case 'advanced':
-          return new JoinUsSection('Join Our Advanced Program', 'Subscribe to Advanced Program').createSection();
-        default: 
-          throw new Error('Invalid section type')
-      }
-    }
+const sectionCreator = new SectionCreator();
+const standardSection = sectionCreator.create('standard');
 
+const footer = document.querySelector('.app-footer');
+footer.before(standardSection);
+
+const form = document.querySelector('.app-section__form');
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  
+  const input = document.querySelector('.app-section__form-input');
+  const email = input.value;
+  const emailIsValid = validate(email);
+
+  if(emailIsValid) {
+    alert("You subscribed!");
+    input.value = '';
+  } else {
+    alert('Enter a correct email');
   }
-
-  const sectionCreator = new SectionCreator();
-  const standardSection = sectionCreator.create('standard')
-  const advancedSection = sectionCreator.create('advanced');
-
-  const footer = document.querySelector('.app-footer');
-  footer.before(advancedSection);
+});
 
 
