@@ -244,13 +244,14 @@ main {
   outline: none;
 }
 
-.app-section__button--join-oc {
+.app-section__button--join-op {
   border-radius: 26px;
   font-size: 14px;
   height: 46px;
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  width: 135px;
+  min-width: 135px;
+  max-width: 200px;
 }
 
 .app-footer {
