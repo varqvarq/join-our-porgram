@@ -204,8 +204,53 @@ main {
   height: 150px;
   border-radius: 50%;
   margin: 64px auto;
-  padding: 0;
+  padding: 10px 0 25px 20px;
   font-size: 4rem;
+  position: relative;
+}
+
+.app-section--join-our-program {
+  background: linear-gradient(rgba(5, 17, 18, 0.5), rgba(5, 17, 18, 0.5)), url(../assets/images/join-our-program.jpg) no-repeat 0% 7%/cover;
+  height: 435px;
+  max-width: 100%;
+  color: white;
+}
+
+.app-section__form {
+  max-width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 20px;
+  padding-bottom: 50px;
+}
+
+.app-section__form-input {
+  width: 400px;
+  height: 35px;
+  padding-left: 20px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: none;
+}
+
+::-webkit-input-placeholder {
+  color: #fff;
+}
+
+.app-section__form-input:focus {
+  outline: none;
+}
+
+.app-section__button--join-oc {
+  border-radius: 26px;
+  font-size: 14px;
+  height: 46px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  width: 135px;
 }
 
 .app-footer {
@@ -291,4 +336,10 @@ main {
   .app-footer__rights {
     justify-self: flex-start;
   }
+
+  .app-section--join-our-program {
+    height: 525px;
+  }
+
+  
 }
