@@ -1,3 +1,5 @@
+import validate from './email-validator.js';
+
 class JoinUsSection {
   constructor(title, buttonText) {
     this.title = title || 'Join Our Program';
@@ -18,23 +20,60 @@ class JoinUsSection {
     appTitle.textContent = this.title;
     appSubtitle.className = 'app-subtitle';
     appSubtitle.innerHTML = 'Sed do eiusmod tempor incididunt<br>ut labore et dolore magna aliqua.';
+
     emailForm.className = 'app-section__form';
     input.className = 'app-section__form-input';
     input.setAttribute('placeholder', 'Email');
     input.setAttribute('required', true);
     input.setAttribute('type', 'email');
+    input.value = localStorage.getItem('email');
     button.className = 'app-section__button app-section__button--join-op';
     button.textContent = this.buttonText;
 
-    emailForm.append(input, button);
+    const subscribe = () => {
+      button.textContent = 'unsubscribe';
+      input.classList.add('hidden');
+      localStorage.setItem('subcribed', 'true');
+      input.value = '';
+    };
+
+    const unsubscribe = () => {
+      button.textContent = this.buttonText;
+      input.classList.remove('hidden');
+      localStorage.setItem('subcribed', 'false');
+      input.value = '';
+    };
+
+    const isSub = localStorage.getItem('subcribed');
+    
+    if(isSub) {
+      subscribe();
+    }
+
+    input.addEventListener('input', () => {
+      localStorage.setItem('email', input.value);
+    });
+
+    button.addEventListener('click', () => {
+      if(button.textContent === 'unsubscribe') {
+        unsubscribe();
+        localStorage.clear();
+      }
+    });
 
     emailForm.addEventListener('submit', (e) => {
       e.preventDefault();
 
       const email = input.value;
-      console.log(email);
+      const emailIsValid = validate(email);
+      const storedEmail = localStorage.getItem('email');
+      
+      if(emailIsValid && storedEmail) {
+        subscribe();
+      }
     });
-    
+
+    emailForm.append(input, button);
     joinOurProgram.append(appTitle, appSubtitle, emailForm);
     this.section = joinOurProgram;
     
@@ -66,4 +105,4 @@ class SectionCreator {
   }
 }
 
-export default { SectionCreator };
+export default SectionCreator;
