@@ -1,9 +1,6 @@
-// eslint-disable-next-line semi
-import '../styles/style.css'
-// eslint-disable-next-line semi
-import SectionCreator from './join-us-section.js'
-// eslint-disable-next-line semi
-import validate from './email-validator.js'
+import '../styles/style.css';
+import SectionCreator from './join-us-section.js';
+import validate from './email-validator.js';
 
 const sectionCreator = new SectionCreator();
 const standardSection = sectionCreator.create('standard');
@@ -21,6 +18,7 @@ form.addEventListener('submit', e => {
 
   if(emailIsValid) {
     alert('You subscribed!');
+    localStorage.setItem('subcribed', email);
     input.value = '';
   } else {
     alert('Enter a correct email');
