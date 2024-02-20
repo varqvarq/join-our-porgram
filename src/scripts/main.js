@@ -1,3 +1,5 @@
+import '../styles/style.css'
+
 import { SectionCreator } from './join-us-section.js'; 
 import { validate } from './email-validator.js';
 
