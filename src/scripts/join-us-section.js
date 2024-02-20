@@ -17,7 +17,7 @@ class JoinUsSection {
     appTitle.className = 'app-title';
     appTitle.textContent = this.title;
     appSubtitle.className = 'app-subtitle';
-    appSubtitle.innerHTML = 'Sed do eiusmod tempor incididunt<br>ut labore et dolore magna aliqua.'
+    appSubtitle.innerHTML = 'Sed do eiusmod tempor incididunt<br>ut labore et dolore magna aliqua.';
     emailForm.className = 'app-section__form';
     input.className = 'app-section__form-input';
     input.setAttribute('placeholder', 'Email');
@@ -42,23 +42,28 @@ class JoinUsSection {
   }
 
   remove() {
-    if(this.section) {
+    if (this.section) {
       this.section.remove();
     }
   }
 }
 
 class SectionCreator {
+  constructor() {
+    this.standard = new JoinUsSection();
+    this.advanced = new JoinUsSection('Join Our Advanced Program', 'Subscribe to Advanced Program');
+  }
+  
   create(type) {
     switch (type) {
       case 'standard':
-        return new JoinUsSection().createSection();
+        return this.standard.createSection();
       case 'advanced':
-        return new JoinUsSection('Join Our Advanced Program', 'Subscribe to Advanced Program').createSection();
+        return this.advanced.createSection();
       default: 
         throw new Error('Invalid section type');
     }
   }
 }
 
-export { SectionCreator }
+export default { SectionCreator };
