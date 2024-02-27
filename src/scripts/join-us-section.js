@@ -14,65 +14,61 @@ class JoinUsSection {
     const emailForm = document.createElement('form');
     const input = document.createElement('input');
     const button = document.createElement('button');
-
+  
     joinOurProgram.className = 'app-section app-section--join-our-program';
     appTitle.className = 'app-title';
-    appTitle.textContent = this.title;
+    appTitle.innerHTML = this.title;
     appSubtitle.className = 'app-subtitle';
     appSubtitle.innerHTML = 'Sed do eiusmod tempor incididunt<br>ut labore et dolore magna aliqua.';
-
-    emailForm.className = 'app-section__form';
+    emailForm.className = 'app-section__form not-sub';
     input.className = 'app-section__form-input';
-    input.setAttribute('placeholder', 'Email');
-    input.setAttribute('required', true);
-    input.setAttribute('type', 'email');
+    input.placeholder = 'Email';
+    input.required = true;
+    input.type = 'email';
     input.value = localStorage.getItem('email');
     button.className = 'app-section__button app-section__button--join-op';
-    button.textContent = this.buttonText;
+    button.innerHTML = this.buttonText;
 
-    const subscribe = () => {
-      button.textContent = 'unsubscribe';
-      input.classList.add('hidden');
-      localStorage.setItem('subcribed', 'true');
-      input.value = '';
-    };
+    const checkSub = () => {
+      const email = localStorage.getItem('email');
+      const ifNotSub = emailForm.classList.contains('not-sub')
 
-    const unsubscribe = () => {
-      button.textContent = this.buttonText;
-      input.classList.remove('hidden');
-      localStorage.setItem('subcribed', 'false');
-      input.value = '';
-    };
-
-    const isSub = localStorage.getItem('subcribed');
-    
-    if(isSub) {
-      subscribe();
+      if(ifNotSub && email) {
+        emailForm.classList.toggle('not-sub');
+        button.innerHTML = 'unsubscribe';
+        input.style.display = 'none';
+        localStorage.setItem('sub', true);
+      } else {
+        emailForm.classList.toggle('not-sub');
+        input.style.display = '';
+        input.value = ''
+        localStorage.clear();
+      }
     }
-
-    input.addEventListener('input', () => {
+    
+    input.addEventListener('input', e => {
       localStorage.setItem('email', input.value);
     });
 
-    button.addEventListener('click', () => {
-      if(button.textContent === 'unsubscribe') {
-        unsubscribe();
-        localStorage.clear();
-      }
-    });
-
-    emailForm.addEventListener('submit', (e) => {
+    emailForm.addEventListener('submit', e => {
       e.preventDefault();
 
       const email = input.value;
-      const emailIsValid = validate(email);
-      const storedEmail = localStorage.getItem('email');
-      
-      if(emailIsValid && storedEmail) {
-        subscribe();
+      const isValid = validate(email);
+
+      if (isValid) {
+        checkSub();
+      } else {
+        alert('Enter a correct email');
       }
     });
 
+    const isSub = localStorage.getItem('sub');
+
+    if(isSub) {
+      checkSub();
+    }
+  
     emailForm.append(input, button);
     joinOurProgram.append(appTitle, appSubtitle, emailForm);
     this.section = joinOurProgram;
