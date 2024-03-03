@@ -61,10 +61,6 @@ module.exports = (env, argv) => {
       new MiniCssExtractPlugin({
         filename: '[name].css', 
       }),
-      new ESLintWebpackPlugin({
-        extensions: ['js', 'jsx'],
-        exclude: ['/node_modules/']
-      })
     ],
     optimization: {
       minimize: isProd,
