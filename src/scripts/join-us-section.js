@@ -30,8 +30,9 @@ class JoinUsSection {
 
     emailForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      console.log(input.value);
-      input.value = '';
+
+      const email = input.value;
+      console.log(email);
     });
     
     joinOurProgram.append(appTitle, appSubtitle, emailForm);
@@ -47,4 +48,17 @@ class JoinUsSection {
   }
 }
 
-export { JoinUsSection };
+class SectionCreator {
+  create(type) {
+    switch (type) {
+      case 'standard':
+        return new JoinUsSection().createSection();
+      case 'advanced':
+        return new JoinUsSection('Join Our Advanced Program', 'Subscribe to Advanced Program').createSection();
+      default: 
+        throw new Error('Invalid section type');
+    }
+  }
+}
+
+export { SectionCreator }
