@@ -4,6 +4,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintWebpackPlugin = require('eslint-webpack-plugin');
+
 
 
 module.exports = (env, argv) => {
@@ -57,6 +60,10 @@ module.exports = (env, argv) => {
       }),
       new MiniCssExtractPlugin({
         filename: '[name].css', 
+      }),
+      new ESLintWebpackPlugin({
+        extensions: ['js', 'jsx'],
+        exclude: ['/node_modules/']
       })
     ],
     optimization: {
