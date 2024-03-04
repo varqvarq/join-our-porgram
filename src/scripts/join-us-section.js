@@ -1,4 +1,4 @@
-import validate from './email-validator.js';
+import validate from './email-validator';
 
 class JoinUsSection {
   constructor(title, buttonText) {
@@ -14,7 +14,7 @@ class JoinUsSection {
     const emailForm = document.createElement('form');
     const input = document.createElement('input');
     const button = document.createElement('button');
-  
+
     joinOurProgram.className = 'app-section app-section--join-our-program';
     appTitle.className = 'app-title';
     appTitle.innerHTML = this.title;
@@ -29,13 +29,13 @@ class JoinUsSection {
     button.className = 'app-section__button app-section__button--join-op';
     button.innerHTML = this.buttonText;
 
-    input.addEventListener('input', e => {
-      const email = input.value.toLowerCase()
+    input.addEventListener('input', () => {
+      const email = input.value.toLowerCase();
       localStorage.setItem('email', email);
     });
 
     const subToggle = (bool) => {
-      if(bool){
+      if (bool) {
         button.innerHTML = 'unsubscribe';
         input.style.display = 'none';
         localStorage.setItem('sub', true);
@@ -44,80 +44,84 @@ class JoinUsSection {
         input.style.display = 'block';
         localStorage.clear();
         input.value = '';
-      }   
-    }
+      }
+    };
 
-    const buttonLoadingState = isLoading => {
+    const buttonLoadingState = (isLoading) => {
       button.disabled = isLoading;
       button.style.opacity = isLoading ? '0.5' : '';
-    }
+    };
 
     const fetchData = async () => {
       const email = localStorage.getItem('email');
       const isValid = validate(email);
       const isSub = localStorage.getItem('sub');
-      const url = 'http://localhost:3000/'
+      const url = 'http://localhost:3000';
 
-      if(isValid && !isSub) {
+      if (isValid && !isSub) {
         try {
-          buttonLoadingState(true);
-          const response = await fetch(`${url}subscribe`, {
+          buttonLoadingState(true, true);
+          const response = await fetch(`${url}/subscribe`, {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
             },
-            body: JSON.stringify({email}),
-          })
-  
-          const data = await response.json();
-               
-          if (response.status === 422) {
-            alert(data.error)
-            localStorage.clear();
-            input.value = '';
-          } else if (!response.ok) {
-            console.error(error)
-          } else {
+            body: JSON.stringify({ email }),
+          });
+
+          const result = await response.json();
+
+          if(response.ok) {
             subToggle(true);
+            console.log('You subscribed!');
+            console.log(result);
+          } else if (response.status === 422) {
+            alert(result.error);
+            input.value = '';
+            localStorage.clear();
+          } else {
+            console.log('Ошибка: ', response.status);
           }
         } catch (e) {
-          console.log(response.status);
-          console.error(e.message)
+          console.error(e);
         } finally {
           buttonLoadingState(false);
         }
-        
+      } else if (!isValid) {
+        alert('Enter a correct email');
       } else {
         try {
           buttonLoadingState(true);
-          const response = await fetch(`${url}unsubscribe`, {
-            method: 'POST'
+          const response = await fetch(`${url}/unsubscribe`, {
+            method: 'POST',
           });
-          const data = await response.json();
-          if(!response.ok) {
-            console.error(data.error);
+
+          if (response.ok) {
+            subToggle(false);
+            console.log('You unsubscribed');
+          } else {
+            console.log('Ошибка: ', response.status);
           }
-          subToggle(false);
-        } catch(e) {
+        } catch (e) {
           console.error(e);
         } finally {
           buttonLoadingState(false);
         }
       }
-    }
+    };
 
-    const isSub = localStorage.getItem('sub')
-    if(isSub) subToggle(true);
+    const isSub = localStorage.getItem('sub');
+    if (isSub) subToggle(true);
 
-    emailForm.addEventListener('submit', e => {
+    emailForm.addEventListener('submit', (e) => {
       e.preventDefault();
       fetchData();
-    })
-  
+    });
+
     emailForm.append(input, button);
     joinOurProgram.append(appTitle, appSubtitle, emailForm);
     this.section = joinOurProgram;
-    
+
     return joinOurProgram;
   }
 
@@ -133,17 +137,17 @@ class JoinUsSectionCreator {
     this.standard = new JoinUsSection();
     this.advanced = new JoinUsSection('Join Our Advanced Program', 'Subscribe to Advanced Program');
   }
-  
+
   create(type) {
     switch (type) {
       case 'standard':
         return this.standard.createSection();
       case 'advanced':
         return this.advanced.createSection();
-      default: 
+      default:
         throw new Error('Invalid section type');
     }
   }
 }
 
-export default JoinUsSectionCreator;
+export default JoinUsSectionCreator

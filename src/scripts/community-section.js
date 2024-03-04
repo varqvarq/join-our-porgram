@@ -13,15 +13,14 @@ class CommunitySection {
     appTitle.innerHTML = 'Big Community of<br> People Like You';
     appSubtitle.innerHTML = 'We’re proud of our products, and we’re really excited when we get feedback from our users.';
 
-
-    const fetchPeople = async() => {
+    const fetchPeople = async () => {
       const response = await fetch('http://localhost:3000/community');
-      if(!response.ok) {
-        throw new Error('Error: ' + response.status);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
       }
       const data = await response.json();
-      data.forEach((people) => {
-        console.log(people.firstName)
+      data.map((people) => {
+        console.log(people.firstName);
         grid.innerHTML += `
           <div class="app-section--community__card">
             <img class="card-avatar" src="${people.avatar}"/>
@@ -29,11 +28,11 @@ class CommunitySection {
             <p class="card-fullname">${people.firstName} ${people.lastName}</p>
             <p class="card-title">${people.position}</p>
           </div>
-        `
+        `;
       });
     };
     fetchPeople();
-  
+
     communitySection.append(appTitle, appSubtitle, grid);
     return communitySection;
   }
@@ -43,9 +42,10 @@ class CommunitySectionCreator {
   constructor() {
     this.section = new CommunitySection();
   }
-  create(){
+
+  create() {
     return this.section.createSection();
   }
 }
 
-export default CommunitySectionCreator
+export default CommunitySectionCreator;
