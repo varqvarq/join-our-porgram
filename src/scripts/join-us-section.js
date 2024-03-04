@@ -18,7 +18,7 @@ class JoinUsSection {
     joinOurProgram.className = 'app-section app-section--join-our-program';
     appTitle.className = 'app-title';
     appTitle.innerHTML = this.title;
-    appSubtitle.className = 'app-subtitle';
+    appSubtitle.className = 'app-subtitle app-subtitle--light';
     appSubtitle.innerHTML = 'Sed do eiusmod tempor incididunt<br>ut labore et dolore magna aliqua.';
     emailForm.className = 'app-section__form not-sub';
     input.className = 'app-section__form-input';
@@ -29,45 +29,90 @@ class JoinUsSection {
     button.className = 'app-section__button app-section__button--join-op';
     button.innerHTML = this.buttonText;
 
-    const checkSub = () => {
-      const email = localStorage.getItem('email');
-      const ifNotSub = emailForm.classList.contains('not-sub')
+    input.addEventListener('input', e => {
+      const email = input.value.toLowerCase()
+      localStorage.setItem('email', email);
+    });
 
-      if(ifNotSub && email) {
-        emailForm.classList.toggle('not-sub');
+    const subToggle = (bool) => {
+      if(bool){
         button.innerHTML = 'unsubscribe';
         input.style.display = 'none';
         localStorage.setItem('sub', true);
       } else {
-        emailForm.classList.toggle('not-sub');
-        input.style.display = '';
-        input.value = ''
+        button.innerHTML = this.buttonText;
+        input.style.display = 'block';
         localStorage.clear();
+        input.value = '';
+      }   
+    }
+
+    const buttonLoadingState = isLoading => {
+      button.disabled = isLoading;
+      button.style.opacity = isLoading ? '0.5' : '';
+    }
+
+    const fetchData = async () => {
+      const email = localStorage.getItem('email');
+      const isValid = validate(email);
+      const isSub = localStorage.getItem('sub');
+      const url = 'http://localhost:3000/'
+
+      if(isValid && !isSub) {
+        try {
+          buttonLoadingState(true);
+          const response = await fetch(`${url}subscribe`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({email}),
+          })
+  
+          const data = await response.json();
+               
+          if (response.status === 422) {
+            alert(data.error)
+            localStorage.clear();
+            input.value = '';
+          } else if (!response.ok) {
+            console.error(error)
+          } else {
+            subToggle(true);
+          }
+        } catch (e) {
+          console.log(response.status);
+          console.error(e.message)
+        } finally {
+          buttonLoadingState(false);
+        }
+        
+      } else {
+        try {
+          buttonLoadingState(true);
+          const response = await fetch(`${url}unsubscribe`, {
+            method: 'POST'
+          });
+          const data = await response.json();
+          if(!response.ok) {
+            console.error(data.error);
+          }
+          subToggle(false);
+        } catch(e) {
+          console.error(e);
+        } finally {
+          buttonLoadingState(false);
+        }
       }
     }
-    
-    input.addEventListener('input', e => {
-      localStorage.setItem('email', input.value);
-    });
+
+    const isSub = localStorage.getItem('sub')
+    if(isSub) subToggle(true);
 
     emailForm.addEventListener('submit', e => {
       e.preventDefault();
-
-      const email = input.value;
-      const isValid = validate(email);
-
-      if (isValid) {
-        checkSub();
-      } else {
-        alert('Enter a correct email');
-      }
-    });
-
-    const isSub = localStorage.getItem('sub');
-
-    if(isSub) {
-      checkSub();
-    }
+      fetchData();
+    })
   
     emailForm.append(input, button);
     joinOurProgram.append(appTitle, appSubtitle, emailForm);
@@ -83,7 +128,7 @@ class JoinUsSection {
   }
 }
 
-class SectionCreator {
+class JoinUsSectionCreator {
   constructor() {
     this.standard = new JoinUsSection();
     this.advanced = new JoinUsSection('Join Our Advanced Program', 'Subscribe to Advanced Program');
@@ -101,4 +146,4 @@ class SectionCreator {
   }
 }
 
-export default SectionCreator;
+export default JoinUsSectionCreator;

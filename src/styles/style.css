@@ -54,13 +54,25 @@ main {
   line-height: 3.20rem;
   text-align: center;
 }
+.app-title--dark {
+ color: #464547;
+}
 
 .app-subtitle {
   font-size: 1.50rem;
-  line-height: 1.625rem;
-  font-weight: 300;
+  line-height: 2rem;
+  font-weight: 400;
   text-align: center;
   font-family: 'Source Sans Pro', sans-serif, Arial;
+  max-width: 35.625rem;
+}
+
+.app-subtitle--dark {
+  color: #666666;
+}
+
+.app-subtitle--light {
+    opacity: 70%;
 }
 
 .app-section__button {
@@ -180,11 +192,16 @@ main {
   color: white;
 }
 
+.app-section--read-more {
+  background-color: #EEEE;
+}
+
 .app-section__article {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 90px;
   margin: 0 140px;
+  color: #666666;
 }
 
 .app-section__button--read-more {
@@ -259,6 +276,64 @@ main {
   max-width: 200px;
 }
 
+.app-section--community {
+  max-width: 100%;
+  min-height: 50rem;
+  background-color: #fFff;
+}
+
+.app-section--community__grid {
+  display: flex;
+  gap: 1.25rem;
+  max-width: 1000px;
+}
+
+.app-section--community__card {
+  max-width: 19.6875rem;
+  max-height: 25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.875rem;
+  border-radius: .5rem;
+}
+
+.app-section--community__card:hover, :focus {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 15%);
+}
+.card-avatar {
+  width: 9.375rem;
+  height: 9.375rem;
+  margin-bottom: .625rem;
+}
+
+.card-description {
+  line-height: 20px;
+  color: #666666;
+  width: 14.625rem;
+  height: 4.6875rem;
+  margin: 0 0 2.5rem 0;
+}
+
+.card-fullname {
+  color: #464547;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 0.75rem;
+  line-height: 1.125rem;
+  letter-spacing: 0.1em;
+  margin: 0 0 .4375rem 0;
+}
+
+.card-title {
+  color: #666666;
+  font-size: .75rem;
+  line-height: 1rem;
+  max-width: 7.5rem;
+  margin: 0;
+}
+
 .app-footer {
   background-color: #3b3d40;
   color: white;
@@ -299,6 +374,13 @@ main {
 }
 
 @media only screen and (max-width: 768px) {
+  .app-title {
+    max-width: 26.5625rem;
+  }
+  
+  .app-subtitle {
+    max-width: 26.875rem;
+  }  
   .app-header {
     grid-template-columns: 1fr 1fr;
     padding: 0 32px;
@@ -345,6 +427,10 @@ main {
 
   .app-section--join-our-program {
     height: 525px;
+  }
+
+  .app-section--community__card:nth-child(-n+2) {
+    display: none;
   }
 
   

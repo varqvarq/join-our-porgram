@@ -1,8 +1,16 @@
 import '../styles/style.css';
-import SectionCreator from './join-us-section.js';
+import JoinUsSectionCreator from './join-us-section.js';
+import CommunitySectionCreator from './community-section.js';
 
-const sectionCreator = new SectionCreator();
-const standardSection = sectionCreator.create('standard');
+const joinSectionCreator = new JoinUsSectionCreator();
+const standardSection = joinSectionCreator.create('standard');
+const communitySectionCreator = new CommunitySectionCreator();
+const communitySection = communitySectionCreator.create()
 
 const footer = document.querySelector('.app-footer');
 footer.before(standardSection);
+
+const secondSection = document.querySelector('.app-section--read-more');
+secondSection.after(communitySection);
+
+  
