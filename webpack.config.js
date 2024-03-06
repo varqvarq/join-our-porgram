@@ -24,6 +24,7 @@ module.exports = (env, argv) => {
         {
           context: ['/api'],
           target: 'http://localhost:3000',
+          pathRewrite: { '^/api': '' },
         }
       ],
         port: 8080,

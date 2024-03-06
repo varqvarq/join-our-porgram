@@ -21,7 +21,7 @@ class CommunitySection {
 
     //making fetch request to /community endpoint
     try {
-      const response = await fetch('http://localhost:3000/community');
+      const response = await fetch('api/community');
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }

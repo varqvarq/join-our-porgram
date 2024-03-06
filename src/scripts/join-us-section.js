@@ -66,7 +66,6 @@ class JoinUsSection {
       const email = localStorage.getItem('email');
       const isValid = validate(email);
       const isSub = localStorage.getItem('sub');
-      const url = 'http://localhost:3000';
 
       //make a fetch to /subscribe if email is valid and if localStorage doesn't have sub value,
       //to add an email to the server 
@@ -74,13 +73,13 @@ class JoinUsSection {
         try {
           //when fetch starts - button turns off
           changeButtonState(true);
-          const response = await fetch(`${url}/subscribe`, {
+          const response = await fetch('api/subscribe', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email }),
-          });
+          }); 
 
           const result = await response.json();
 
@@ -109,7 +108,7 @@ class JoinUsSection {
       } else {
         try {
           changeButtonState(true);
-          const response = await fetch(`${url}/unsubscribe`, {
+          const response = await fetch('api/unsubscribe', {
             method: 'POST',
           });
           if (response.ok) {
