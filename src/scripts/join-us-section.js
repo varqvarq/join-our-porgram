@@ -1,4 +1,4 @@
-import validate from './email-validator';
+import { validate }from './email-validator';
 
 class JoinUsSection {
   constructor(title, buttonText) {
@@ -96,7 +96,7 @@ class JoinUsSection {
             console.log('Ошибка: ', response.status);
           }
         } catch (e) {
-          console.error(e);
+          console.error(JSON.stringify(e));
         } finally {
           //when fetch ends - button turns on
           changeButtonState(false);
