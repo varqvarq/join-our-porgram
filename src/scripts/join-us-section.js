@@ -56,7 +56,8 @@ class JoinUsSection {
     };
 
     //a function that blocks a button during fetch
-    const changeButtonState = (isLoading) => {
+    const changeFormState = (isLoading) => {
+      input.disabled = isLoading;
       button.disabled = isLoading;
       button.style.opacity = isLoading ? '0.5' : '';
     };
@@ -72,7 +73,7 @@ class JoinUsSection {
       if (isValid && !isSub) {
         try {
           //when fetch starts - button turns off
-          changeButtonState(true);
+          changeFormState(true);
           const response = await fetch('api/subscribe', {
             method: 'POST',
             headers: {
@@ -99,7 +100,7 @@ class JoinUsSection {
           console.error(JSON.stringify(e));
         } finally {
           //when fetch ends - button turns on
-          changeButtonState(false);
+          changeFormState(false);
         }
         //if email is not valid then alert shows up
       } else if (!isValid) {
@@ -107,7 +108,7 @@ class JoinUsSection {
         //if user already subscribed then make a fetch to /unsubscribe to remove email from server
       } else {
         try {
-          changeButtonState(true);
+          changeFormState(true);
           const response = await fetch('api/unsubscribe', {
             method: 'POST',
           });
@@ -120,7 +121,7 @@ class JoinUsSection {
         } catch (e) {
           console.error(e);
         } finally {
-          changeButtonState(false);
+          changeFormState(false);
         }
       }
     };
