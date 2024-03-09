@@ -1,4 +1,4 @@
-import validate from './email-validator.js';
+import { validate } from './email-validator.js';
 
 class JoinUsSection {
   constructor(title, buttonText) {
