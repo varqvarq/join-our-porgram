@@ -20,13 +20,6 @@ module.exports = (env, argv) => {
       static: {
         directory: path.resolve(__dirname, 'dist'),
       },
-      proxy: [
-        {
-          context: ['/api'],
-          target: 'http://localhost:3000',
-          pathRewrite: { '^/api': '' },
-        }
-      ],
         port: 8080,
         open: true,
         hot: true,
