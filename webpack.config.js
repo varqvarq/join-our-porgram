@@ -4,10 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const ESLintPlugin = require('eslint-webpack-plugin');
 const ESLintWebpackPlugin = require('eslint-webpack-plugin');
-
-
 
 module.exports = (env, argv) => {
   const isProd = argv.mode === 'production';
@@ -23,7 +20,14 @@ module.exports = (env, argv) => {
       static: {
         directory: path.resolve(__dirname, 'dist'),
       },
-        port: 3000,
+      proxy: [
+        {
+          context: ['/api'],
+          target: 'http://localhost:3000',
+          pathRewrite: { '^/api': '' },
+        }
+      ],
+        port: 8080,
         open: true,
         hot: true,
     },
