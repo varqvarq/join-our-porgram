@@ -5,4 +5,7 @@ const sectionCreator = new SectionCreator();
 const standardSection = sectionCreator.create('standard');
 
 const footer = document.querySelector('.app-footer');
-footer.before(standardSection);
+
+document.addEventListener('DOMContentLoaded', e => {
+  footer.before(standardSection);
+})

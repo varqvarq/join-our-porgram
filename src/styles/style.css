@@ -1,5 +1,10 @@
 @import url(normalize.css);
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
 
+:root {
+  --bg-gradient: linear-gradient(to top, rgba(65, 65, 65, .5), rgba(65, 65, 65, .5));
+}
 
 body {
   background-color: #fff;
@@ -186,7 +191,7 @@ main {
 }
 
 .app-section--image-peak {
-  background: linear-gradient(to top, rgba(65, 65, 65, .5), rgba(65, 65, 65, .5)), url(../assets/images/your-image-here.jpg) no-repeat center/cover;
+  background: var(--bg-gradient), url(../assets/images/your-image-here.jpg) no-repeat center/cover;
   height: 800px;
   max-width: 100%;
   color: white;
