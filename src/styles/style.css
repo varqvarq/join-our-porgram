@@ -438,6 +438,4 @@ main {
   .app-section--community__card:nth-child(-n+2) {
     display: none;
   }
-
-  
 }

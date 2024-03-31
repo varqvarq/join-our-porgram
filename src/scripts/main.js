@@ -1,4 +1,5 @@
 import '../styles/style.css';
+import './website-section.js';
 import SectionCreator from './join-us-section.js';
 
 const sectionCreator = new SectionCreator();
