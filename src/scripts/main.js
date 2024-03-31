@@ -6,7 +6,21 @@ const sectionCreator = new SectionCreator();
 const standardSection = sectionCreator.create('standard');
 
 const footer = document.querySelector('.app-footer');
+footer.before(standardSection);
 
-document.addEventListener('DOMContentLoaded', e => {
-  footer.before(standardSection);
-})
+if(window.Worker) {
+  const worker = new Worker(new URL('./web-worker.js', import.meta.url));
+
+  const buttons = document.querySelectorAll('button');
+  const input = document.querySelector('input');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', e => {
+      worker.postMessage({eventType: 'click', target: button.className})
+    });
+  })
+
+  input.addEventListener('input', e => {
+    worker.postMessage({type: 'input', target: input.className})
+  })
+};

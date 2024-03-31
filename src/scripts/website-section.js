@@ -5,8 +5,14 @@ class WebsiteSection extends HTMLElement {
   }
 
   connectedCallback() {
+
     const title = this.getAttribute('title');
     const description = this.getAttribute('description');
+    
+    if(!title) {
+      throw new Error("error");
+    }
+    
     const section = this.getAttribute('section');
     let titleContent = `<h2 class="app-title">${title}</h2>`;
     let descriptionContent = `<h3 class="app-subtitle">${description}</h3>`;
