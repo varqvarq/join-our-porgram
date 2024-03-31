@@ -3,22 +3,28 @@ const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const ESLintWebpackPlugin = require('eslint-webpack-plugin');
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+const ImageminWebpWebpackPlugin = require('imagemin-webp-webpack-plugin');
 
 module.exports = (env, argv) => {
   const isProd = argv.mode === 'production';
 
   return {
     context: path.resolve(__dirname, 'src'),
+    mode: 'development',
     entry: "./scripts/main.js",
     output: {
       filename: "bundle.js",
-      path: path.resolve(__dirname, "dist")
+      path: path.resolve(__dirname, './dist')
     },
+
+    // devtool: 'inline-source-map',
     devServer: {
+      
       static: {
-        directory: path.resolve(__dirname, 'dist'),
+        directory: path.join(__dirname, './dist'),
       },
         port: 8080,
         open: true,
@@ -43,6 +49,13 @@ module.exports = (env, argv) => {
             }
           },
         },
+        {
+          test: /\.(png|svg|jpg|jpeg|webp)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: 'assets/images/[name][ext]',
+          },
+        }   
       ],
     },
     plugins: [
@@ -51,9 +64,10 @@ module.exports = (env, argv) => {
         template: './index.html'
       }),
       new CopyWebpackPlugin({
-        patterns: [
-          { from:'./assets/images/*.png', to:'assets/images/[name][ext]', },
-        ],
+        patterns: [{
+          from: path.resolve(__dirname, 'src/assets/images/'),
+          to: path.resolve(__dirname, 'dist/assets/images')
+        }]
       }),
       new MiniCssExtractPlugin({
         filename: '[name].css', 
@@ -61,7 +75,22 @@ module.exports = (env, argv) => {
     ],
     optimization: {
       minimize: isProd,
-      minimizer: isProd ? [new TerserPlugin()] : [],
+      minimizer: [
+        `...`,
+        new TerserPlugin(),
+        new CssMinimizerPlugin(),
+        new ImageMinimizerPlugin({
+          minimizer: {
+            implementation: ImageMinimizerPlugin.imageminMinify,
+            options: {
+              plugins: [
+                [ 'mozjpeg', {progressive: true}]
+              ],
+            },
+          },
+        }),
+        // new ImageminWebpWebpackPlugin(),
+      ]
     }
   };
 }
