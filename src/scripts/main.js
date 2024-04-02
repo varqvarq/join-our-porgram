@@ -24,3 +24,10 @@ if(window.Worker) {
     worker.postMessage({type: 'input', target: input.className})
   })
 };
+
+window.addEventListener('load', e => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+    .then()
+  }
+})
