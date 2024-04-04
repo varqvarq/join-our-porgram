@@ -17,15 +17,23 @@ module.exports = (env, argv) => {
     entry: "./scripts/main.js",
     output: {
       filename: "bundle.js",
-      path: path.resolve(__dirname, './dist')
+      path: path.resolve(__dirname, './dist'),
+      clean: true,
     },
 
-    // devtool: 'inline-source-map',
+    devtool: 'inline-source-map',
     devServer: {
       
       static: {
         directory: path.join(__dirname, './dist'),
       },
+      proxy: [
+        {
+          context: ['/api'],
+          target: 'http://localhost:3000',
+          pathRewrite: { '^/api': '' },
+        }
+      ],
         port: 8080,
         open: true,
         hot: true,
